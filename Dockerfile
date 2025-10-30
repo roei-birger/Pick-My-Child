@@ -1,6 +1,7 @@
 FROM python:3.11-slim
 
 # Install system dependencies for OpenCV and AI libraries
+# Including build tools for compiling insightface
 RUN apt-get update && apt-get install -y \
     libglib2.0-0 \
     libsm6 \
@@ -8,6 +9,9 @@ RUN apt-get update && apt-get install -y \
     libxrender-dev \
     libgomp1 \
     libgl1 \
+    build-essential \
+    g++ \
+    cmake \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -17,7 +21,7 @@ COPY requirements.txt .
 
 # Upgrade pip and install dependencies
 RUN pip install --upgrade pip && \
-    pip install -r requirements.txt
+    pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
 COPY . .
