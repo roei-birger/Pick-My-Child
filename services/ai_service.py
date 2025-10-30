@@ -35,15 +35,15 @@ class AIService:
             
             logger.info("Initializing InsightFace model...")
             
-            # Initialize FaceAnalysis with ArcFace model
+            # Initialize FaceAnalysis with lighter model for low memory
             self.model = FaceAnalysis(
-                name='buffalo_l',  # High accuracy model
-                providers=['CUDAExecutionProvider', 'CPUExecutionProvider']
+                name='buffalo_sc',  # Smaller model (buffalo_sc instead of buffalo_l)
+                providers=['CPUExecutionProvider']  # CPU only to save memory
             )
             
             self.model.prepare(
-                ctx_id=0,  # GPU id, -1 for CPU
-                det_size=(640, 640)  # Detection size
+                ctx_id=-1,  # -1 for CPU (saves memory vs GPU context)
+                det_size=(320, 320)  # Smaller detection size to save memory
             )
             
             self.initialized = True
